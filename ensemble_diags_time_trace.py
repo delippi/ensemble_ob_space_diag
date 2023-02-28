@@ -3,6 +3,7 @@
 import tictoc
 from emcpy.utils import utils
 import pyGSI.ensemble_diags
+#import pyGSI.ensemble_diags_existingmethod
 from emcpy.plots.plots import LinePlot, HorizontalLine
 from emcpy.plots.create_plots import CreatePlot, CreateFigure
 import numpy as np
@@ -34,6 +35,7 @@ expt_names.append("rrfs_a_conus")
 #expt_names.append("rrfs_a_na")
 # expt_names.append("just uncomment for a second experiment")
 
+delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
@@ -65,7 +67,6 @@ error_max = 40.0  # maximum error standard deviation for including observation i
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
 ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
-#ob_types = ["q", "u"]  # supported types: u, v, t, and q
 #ob_types = ["u"]
 codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
 codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
@@ -98,12 +99,14 @@ scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigge
 # ********************************************************************
 
 # Calculate all observation space statistics
+tic1 = tictoc.tic()
 dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.time_trace(
     datapath,
     date1,
     date2,
     expt_names,
     n_mem,
+    delt,
     skip_enkf_hours,
     ob_types,
     codes_uv,
@@ -116,9 +119,8 @@ dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_ob
     lon_max,
     lon_min,
     error_max,
-    error_min,
-)
-
+    error_min,)
+tictoc.toc(tic1, "")
 # ****************************************************************************
 
 # Define the x-axis (time UTC)

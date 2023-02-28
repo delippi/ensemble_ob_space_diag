@@ -36,7 +36,7 @@ expt_names.append("rrfs_a_conus")  # set to "none" if no experiment to compare a
 # expt_names.append("experiment2") #uncomment for additional experiments
 #ctrl_name = "rrfs_a_conus"  # control name or single experiment name.
 
-delt = 1  # time delta
+delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
@@ -45,14 +45,13 @@ except:
     date1 = "2023011819"
     date2 = "2023011900"
     datapath = "../diags/"
-#runid = "ensmean"
 
-skip_enkf_hours = []  # right now rrfs only runs EnKF at 18-23Z
-
-#outfile = "./data/"  # profile stats saved here
+# right now rrfs only runs EnKF at 18-00Z
+#skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+skip_enkf_hours = []
 
 # Filtering parameters
-hem = None # CONUS, NH, TR, SH, GL, or None. Overrides lat/lon max/min filter options.
+hem = None  # GL, NH, TR, SH, CONUS, or None. Overrides lat/lon max/mins filter options.
 
 p_max = 1050.0  # maximum pressure (mb) for including observation in calculations
 p_min = 100.0  # minimum pressure (mb) for including observation in calculations
@@ -68,8 +67,7 @@ lon_min = 0.0  # minimum latitude (deg E) for including observation in calculati
 error_max = 40.0  # maximum error standard deviation for including observation in calculations
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
-#ob_types = ["uv", "t", "q"]
-ob_types = ["u", "v", "t", "q"]
+ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
 #ob_types = ["u"]
 codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
 codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
@@ -94,6 +92,7 @@ tick_label_fontsize = 10  # xy-axes tick label fontsizes
 lw = 1.5  # linewidth
 ms = 4  # markersize
 ls = ["-", "--", ":", ".-"]  # linestyles: solid, dashed, dotted, dash-dotted
+
 scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigger fig)
 levtop = 125
 levbot = 925  # plot limits
