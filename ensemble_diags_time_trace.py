@@ -94,8 +94,7 @@ scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigge
 # ********************************************************************
 
 # Calculate all observation space statistics
-dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser =
-pyGSI.ensemble_diags.time_trace(
+dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.time_trace(
     datapath,
     date1,
     date2,

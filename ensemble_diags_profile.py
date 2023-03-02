@@ -101,8 +101,7 @@ qmax = 3.00
 
 for expt_name in expt_names:
     # Call main function - for experiments
-    levels, levels_up, levels_down, dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser =
-    pyGSI.ensemble_diags.profile(
+    levels, levels_up, levels_down, dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.profile(
         datapath,
         date1,
         date2,
