@@ -1,9 +1,5 @@
-#import emcpy.utils.utils as utils
-#import emcpy.utils as utils
 import tictoc
-from emcpy.utils import utils
 import pyGSI.ensemble_diags
-#import pyGSI.ensemble_diags_existingmethod
 from emcpy.plots.plots import LinePlot, HorizontalLine
 from emcpy.plots.create_plots import CreatePlot, CreateFigure
 import numpy as np
@@ -15,16 +11,18 @@ import matplotlib.pyplot as plt
 
 tic = tictoc.tic()
 
+
 def annotate_int(x, y, color, ax):
     for i in range(len(x)):
-        #value = str(int(y[i]))
         value = f"{y[i]:.0f}"
         ax.annotate(value, xy=(x[i], y[i]), rotation=60, ha='center', color=color)
+
+
 def annotate_float(x, y, color, ax):
     for i in range(len(x)):
-        #value = str(float({y[i]))
         value = f"{y[i]:.2f}"
         ax.annotate(value, xy=(x[i], y[i]), rotation=60, ha='center', color=color)
+
 
 expt_names = []
 # ********************************************************************
@@ -32,7 +30,7 @@ expt_names = []
 # ********************************************************************
 n_mem = 30
 expt_names.append("rrfs_a_conus")
-#expt_names.append("rrfs_a_na")
+# expt_names.append("rrfs_a_na")
 # expt_names.append("just uncomment for a second experiment")
 
 delt = 1  # 1-hourly data
@@ -40,13 +38,13 @@ try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
     datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
-except:
+except IndexError:
     date1 = "2023011819"
     date2 = "2023011900"
     datapath = "../diags/"
 
-# right now rrfs only runs EnKF at 18-00Z
-#skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+# Example if EnKF is only run 18-00Z
+# skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 skip_enkf_hours = []
 
 # Filtering parameters
@@ -54,8 +52,6 @@ hem = None  # GL, NH, TR, SH, CONUS, or None. Overrides lat/lon max/mins filter 
 
 p_max = 1050.0  # maximum pressure (mb) for including observation in calculations
 p_min = 100.0  # minimum pressure (mb) for including observation in calculations
-#p_max = 227.30
-#p_min = 227.30
 
 lat_max = 90.0  # maximum latitude (deg N) for including observation in calculations
 lat_min = 0.0  # minimum latitude (deg N) for including observation in calculations
@@ -67,7 +63,6 @@ error_max = 40.0  # maximum error standard deviation for including observation i
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
 ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
-#ob_types = ["u"]
 codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
 codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
 
@@ -99,8 +94,8 @@ scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigge
 # ********************************************************************
 
 # Calculate all observation space statistics
-tic1 = tictoc.tic()
-dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.time_trace(
+dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser =
+pyGSI.ensemble_diags.time_trace(
     datapath,
     date1,
     date2,
@@ -120,7 +115,6 @@ dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_ob
     lon_min,
     error_max,
     error_min,)
-tictoc.toc(tic1, "")
 # ****************************************************************************
 
 # Define the x-axis (time UTC)
@@ -129,6 +123,7 @@ x = [int(item) for item in x_str]
 
 # Prepare for plotting
 for ob_type in ob_types:  # make a new figure for each observation type
+    i_o = ob_types.index(ob_type)
     if ob_type == "u" or ob_type == "v":
         codes = codes_uv
         units = 'm/s'
@@ -139,10 +134,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
         codes = codes_tq
         units = 'g/kg'
 
-
     plot1 = CreatePlot()
     plt_list = []
-
 
     for expt_name in expt_names:
         i_o = ob_types.index(ob_type)
@@ -160,10 +153,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
         lp.label = "%s" % (expt_name)
         plt_list.append(lp)
 
-
     # Plot mean,sd,totalspread,etc.
     for expt_name in expt_names:  # all experiments go on the same figure
-        i_o = ob_types.index(ob_type)
         i_e = expt_names.index(expt_name)
 
         if plot_bias:
@@ -177,7 +168,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markerfacecolor = None
             lp.alpha = None
             lp.label = "bias of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_rms:
@@ -185,12 +177,13 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp = LinePlot(x, y)
             lp.color = "red"
             lp.linestyle = ls[i_e]
-            lp.linewidth = lw  # *1.4
+            lp.linewidth = lw
             lp.marker = "o"
             lp.markersize = ms
             lp.alpha = None
             lp.label = "rms of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_std_dev:
@@ -203,7 +196,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "std_dev of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_spread:
@@ -216,7 +210,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "spread (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_ob_error:
@@ -229,7 +224,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "ob_error (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_total_spread:
@@ -242,7 +238,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "total spread (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_cr:
@@ -255,7 +252,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "consistency ratio"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_ser:
@@ -268,7 +266,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.markersize = ms
             lp.alpha = None
             lp.label = "spread error ratio"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_zero_line:
@@ -303,7 +302,8 @@ for ob_type in ob_types:  # make a new figure for each observation type
         lp.markersize = ms
         lp.alpha = None
         lp.label = "total"
-        if i_e > 0: lp.label = None
+        if i_e > 0:
+            lp.label = None
         plt_list2.append(lp)
 
         # Number of observations assimilated
@@ -316,11 +316,11 @@ for ob_type in ob_types:  # make a new figure for each observation type
         lp.markersize = ms
         lp.alpha = None
         lp.label = "assim"
-        if i_e > 0: lp.label = None
+        if i_e > 0:
+            lp.label = None
         plt_list2.append(lp)
 
-    ncols=1 #len(expt_names)
-
+    ncols = 1  # len(expt_names)
 
     # Plot 1
     plot1.plot_layers = plt_list
@@ -331,7 +331,7 @@ for ob_type in ob_types:  # make a new figure for each observation type
     plot1.add_grid()
     plot1.set_xticks(x)
     plot1.set_xticklabels(x_str, rotation=90)
-    plot1.add_legend(loc="upper left", bbox_to_anchor=(1,1), fancybox=True, framealpha=0.80, ncols=ncols)
+    plot1.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=ncols)
 
     # Plot 2
     plot2.plot_layers = plt_list2
@@ -340,14 +340,14 @@ for ob_type in ob_types:  # make a new figure for each observation type
     plot2.add_grid()
     plot2.set_xticks(x)
     plot2.set_xticklabels(x_str, rotation=90)
-    plot2.add_legend(loc="upper left", bbox_to_anchor=(1,1), fancybox=True, framealpha=0.80, ncols=ncols)
+    plot2.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=ncols)
 
     # Figure
     fig = CreateFigure(nrows=2, ncols=1, figsize=((8 + ncols * 1) * scale_fig_size, 6 * scale_fig_size))
     fig.plot_list = [plot1, plot2]
 
-    sdate=dates[0]
-    edate=dates[-1]
+    sdate = dates[0]
+    edate = dates[-1]
 
     fig.create_figure()  # must go before add_suptitle
 
@@ -356,23 +356,22 @@ for ob_type in ob_types:  # make a new figure for each observation type
     lannotate = True
     if lannotate:
         # Plot 1 - annotations
-        #annotate_float(x, bias[i_o, i_e, :], "green", plt.subplot(211))
-        #annotate_float(x, rms[i_o, i_e, :], "red", plt.subplot(211))
-        #annotate_float(x, std_dev[i_o, i_e, :], "magenta", plt.subplot(211))
-        #annotate_float(x, spread[i_o, i_e, :], "cyan", plt.subplot(211))
-        #annotate_float(x, ob_error[i_o, i_e, :], "orange", plt.subplot(211))
-        #annotate_float(x, total_spread[i_o, i_e, :], "navy", plt.subplot(211))
-        #annotate_float(x, cr[i_o, i_e, :], "gray", plt.subplot(211))
-        #annotate_float(x, ser[i_o, i_e, :], "black", plt.subplot(211))
+        # annotate_float(x, bias[i_o, i_e, :], "green", plt.subplot(211))
+        # annotate_float(x, rms[i_o, i_e, :], "red", plt.subplot(211))
+        # annotate_float(x, std_dev[i_o, i_e, :], "magenta", plt.subplot(211))
+        # annotate_float(x, spread[i_o, i_e, :], "cyan", plt.subplot(211))
+        # annotate_float(x, ob_error[i_o, i_e, :], "orange", plt.subplot(211))
+        # annotate_float(x, total_spread[i_o, i_e, :], "navy", plt.subplot(211))
+        # annotate_float(x, cr[i_o, i_e, :], "gray", plt.subplot(211))
+        # annotate_float(x, ser[i_o, i_e, :], "black", plt.subplot(211))
 
         # Plot 2 - annotations
         annotate_int(x, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(212))
-        #annotate_int(x, num_obs_total[i_o, i_e, :], "black", plt.subplot(212))
-
+        # annotate_int(x, num_obs_total[i_o, i_e, :], "black", plt.subplot(212))
 
     fig.add_suptitle(f"{ob_type}: Ensemble DA Obs Space Diagnostics ({sdate}-{edate})", ha="center", fontsize=suptitle_fontsize)
     fig.tight_layout()  # must go after add_suptitle
     fig.save_figure(f"./obs_diag_{sdate}-{edate}_{ob_type}.png")
 
 # Calculate time to run script
-tictoc.toc(tic, "End. ")
+tictoc.toc(tic, "Done. ")

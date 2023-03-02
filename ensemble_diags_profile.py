@@ -1,53 +1,47 @@
 import tictoc
+import pyGSI.ensemble_diags
 from emcpy.plots.plots import LinePlot, VerticalLine, HorizontalSpan
 from emcpy.plots.create_plots import CreatePlot, CreateFigure
-import matplotlib
-
-# matplotlib.use('Agg')
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import rcParams
-from scipy import stats
-from netCDF4 import Dataset
-#from emcpy.utils import utils
-#import emcpy.utils.filter_obs as _filter_obs
-import pyGSI.ensemble_diags2
-import os, sys #, dateutils
-import emcpy.utils.dateutils as _dateutils
-#import ttest
+import matplotlib
+import sys
 import warnings
-import pdb
 
-tic0 = tictoc.tic()
+matplotlib.use("Agg")  # Must be called before importing pyplot
+import matplotlib.pyplot as plt
+
+tic = tictoc.tic()
 
 warnings.simplefilter("ignore")
+
 
 def annotate_int(x, y, z, color, ax):
     for i in range(len(z)):
         value = f"{z[i]:.0f}"
         ax.annotate(value, xy=(x, y[i]), rotation=0, ha='right', color=color, fontsize=7)
 
+
 expt_names = []
 # ********************************************************************
 #                        USER SPECIFIED PARAMETERS                  *
 # ********************************************************************
 n_mem = 30
-expt_names.append("rrfs_a_conus")  # set to "none" if no experiment to compare against control.
-# expt_names.append("experiment2") #uncomment for additional experiments
-#ctrl_name = "rrfs_a_conus"  # control name or single experiment name.
+expt_names.append("rrfs_a_conus")
+# expt_names.append("rrfs_a_na")
+# expt_names.append("just uncomment for a second experiment")
 
 delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
     datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
-except:
+except IndexError:
     date1 = "2023011819"
     date2 = "2023011900"
     datapath = "../diags/"
 
-# right now rrfs only runs EnKF at 18-00Z
-#skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+# Example if EnKF is only run 18-00Z
+# skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 skip_enkf_hours = []
 
 # Filtering parameters
@@ -55,8 +49,6 @@ hem = None  # GL, NH, TR, SH, CONUS, or None. Overrides lat/lon max/mins filter 
 
 p_max = 1050.0  # maximum pressure (mb) for including observation in calculations
 p_min = 100.0  # minimum pressure (mb) for including observation in calculations
-#p_max = 227.30
-#p_min = 227.30
 
 lat_max = 90.0  # maximum latitude (deg N) for including observation in calculations
 lat_min = 0.0  # minimum latitude (deg N) for including observation in calculations
@@ -68,7 +60,6 @@ error_max = 40.0  # maximum error standard deviation for including observation i
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
 ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
-#ob_types = ["u"]
 codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
 codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
 
@@ -110,8 +101,8 @@ qmax = 3.00
 
 for expt_name in expt_names:
     # Call main function - for experiments
-    tic = tictoc.tic()
-    levels, levels_up, levels_down, dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags2.profile(
+    levels, levels_up, levels_down, dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser =
+    pyGSI.ensemble_diags.profile(
         datapath,
         date1,
         date2,
@@ -130,11 +121,7 @@ for expt_name in expt_names:
         lon_max,
         lon_min,
         error_max,
-        error_min,
-    )
-    tictoc.toc(tic, f"expt: {expt_name}. ")
-
-
+        error_min,)
 
 plot1 = CreatePlot()
 plot2 = CreatePlot()
@@ -149,8 +136,23 @@ for ob_type in ob_types:
     plt_list = []
     i_o = ob_types.index(ob_type)
     for expt_name in expt_names:
-        if expt_names[0] == "none":
-            continue
+        i_o = ob_types.index(ob_type)
+        i_e = expt_names.index(expt_name)
+
+        # add experiment name to legend (this doesn't actually plot anything.
+        x = np.NaN * bias[i_o, i_e]
+        lp = LinePlot(x, y)
+        lp.color = "black"
+        lp.linestyle = ls[i_e]
+        lp.linewidth = lw
+        lp.marker = "o"
+        lp.markersize = ms
+        lp.alpha = None
+        lp.label = "%s" % (expt_name)
+        plt_list.append(lp)
+
+    # Plot mean,sd,totalspread,etc.
+    for expt_name in expt_names:  # all experiments go on the same figure
         i_e = expt_names.index(expt_name)
 
         if plot_bias:
@@ -161,9 +163,11 @@ for ob_type in ob_types:
             lp.linewidth = lw
             lp.marker = "o"
             lp.markersize = ms
+            lp.markerfacecolor = None
             lp.alpha = None
             lp.label = "bias of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_rms:
@@ -176,7 +180,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "rms of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_std_dev:
@@ -189,7 +194,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "std_dev of F-O"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_spread:
@@ -202,7 +208,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "spread (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_ob_error:
@@ -215,7 +222,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "ob_error (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_total_spread:
@@ -228,7 +236,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "total spread (std_dev)"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_cr:
@@ -241,7 +250,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "consistency ratio"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_ser:
@@ -254,7 +264,8 @@ for ob_type in ob_types:
             lp.markersize = ms
             lp.alpha = None
             lp.label = "spread error ratio"
-            if i_e > 0: lp.label = None
+            if i_e > 0:
+                lp.label = None
             plt_list.append(lp)
 
         if plot_zero_line:
@@ -282,10 +293,7 @@ for ob_type in ob_types:
         if ob_type == "q":
             plt_list4 = plt_list
 
-
-
-
-common_title=f"{p_max:.1f}-{p_min:.1f} hPa\n{lat_min:.1f}-{lat_max:.1f} degN,  {lon_min:.1f}-{lon_max:.1f} degE\n{error_min:.6f}-{error_max:.1f} err"
+common_title = f"{p_max:.1f}-{p_min:.1f} hPa\n{lat_min:.1f}-{lat_max:.1f} degN,  {lon_min:.1f}-{lon_max:.1f} degE\n{error_min:.6f}-{error_max:.1f} err"
 
 plt_list = []
 n_plots = 0
@@ -302,7 +310,6 @@ for ob_type in ob_types:
         plot1.add_grid()
         plt_list.append(plot1)
         n_plots = n_plots + 1
-
 
     if ob_type == "v":
         plot2.plot_layers = plt_list2
@@ -335,11 +342,11 @@ for ob_type in ob_types:
         plot4.set_ylim(levbot, levtop)
         plot4.add_grid()
         plt_list.append(plot4)
-        plot4.add_legend(loc="upper left", bbox_to_anchor=(1,1), fancybox=True, framealpha=0.80, ncols=1)
+        plot4.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=1)
         n_plots = n_plots + 1
 
 # Figure
-fig = CreateFigure(nrows=1, ncols=n_plots, figsize=( (3.5 * n_plots) * scale_fig_size, 6 * scale_fig_size))
+fig = CreateFigure(nrows=1, ncols=n_plots, figsize=((3.5 * n_plots) * scale_fig_size, 6 * scale_fig_size))
 fig.plot_list = plt_list
 fig.create_figure()
 
@@ -352,14 +359,11 @@ if lannotate:
     annotate_int(tmax, y, num_obs_assim[2, i_e, :], "gray", plt.subplot(143))
     annotate_int(qmax, y, num_obs_assim[3, i_e, :], "gray", plt.subplot(144))
 
-
-
-sdate=dates[0]
-edate=dates[-1]
+sdate = dates[0]
+edate = dates[-1]
 fig.add_suptitle(f"Ensemble DA Obs Space Diagnostics ({sdate}-{edate})", ha="center", fontsize=suptitle_fontsize)
 fig.tight_layout()  # must go after add_suptitle
-#fig.save_figure("profile.png")
 fig.save_figure(f"./obs_diag_profiles_{sdate}-{edate}.png")
 
 # Calculate time to run script
-tictoc.toc(tic0, "Done. ")
+tictoc.toc(tic, "Done. ")
