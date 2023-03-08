@@ -88,6 +88,12 @@ ms = 4  # markersize
 ls = ["-", "--", ":", ".-"]  # linestyles: solid, dashed, dotted, dash-dotted
 
 scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigger fig)
+umin = -0.5
+umax = 3.5
+tmin = -0.5
+tmax = 2.00
+qmin = -0.5
+qmax = 2.00
 
 # ********************************************************************
 #                   END OF USER SPECIFIED PARAMETERS                *
@@ -126,12 +132,18 @@ for ob_type in ob_types:  # make a new figure for each observation type
     if ob_type == "u" or ob_type == "v":
         codes = codes_uv
         units = 'm/s'
+        ymin = umin
+        ymax = umax
     elif ob_type == "t":
         codes = codes_tq
         units = 'K'
+        ymin = tmin
+        ymax = tmax
     elif ob_type == "q":
         codes = codes_tq
         units = 'g/kg'
+        ymin = qmin
+        ymax = qmax
 
     plot1 = CreatePlot()
     plt_list = []
@@ -326,10 +338,11 @@ for ob_type in ob_types:  # make a new figure for each observation type
     title = f"Filtered by:\n{ob_type}{codes},  {p_max:.1f}-{p_min:.1f} hPa,  {lat_min:.1f}-{lat_max:.1f} degN,  {lon_min:.1f}-{lon_max:.1f} degE,  {error_min:.6f}-{error_max:.1f} err"
 
     plot1.add_title(title, loc="left", fontsize=title_fontsize, color="red", style="italic")
-    plot1.add_ylabel(f"stats [{units}]", fontsize=xy_label_fontsize)
+    plot1.add_ylabel(f"stats ({units})", fontsize=xy_label_fontsize)
     plot1.add_grid()
     plot1.set_xticks(x)
     plot1.set_xticklabels(x_str, rotation=90)
+    plot1.set_ylim(ymin, ymax)
     plot1.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=ncols)
 
     # Plot 2
