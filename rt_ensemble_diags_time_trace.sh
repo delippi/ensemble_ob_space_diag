@@ -6,9 +6,22 @@ py=/u/donald.e.lippi/miniconda3/bin/python
 
 export incdate=/u/donald.e.lippi/bin/incdate
 
+datapath="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+
 runtime=$(date --date "2 hour ago" "+%Y%m%d%H")
-runtime=20230222
-runtime=${runtime}12
+runtime=$(date --date "24 hour ago" "+%Y%m%d%H")
+
+
+year=`echo $runtime | cut -c 1-4`
+mon=`echo $runtime | cut -c 5-6`
+day=`echo $runtime | cut -c 7-8`
+
+#year=2023
+#mon=03
+#day=03
+cyc=23
+
+runtime=${year}${mon}${day}${cyc}
 hours=23
 #hours=17
 
@@ -37,7 +50,7 @@ else
 fi
 cd $outdir
 
-$py /lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/ensemble_diags_time_trace.py $date1 $date2
+$py /lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/ensemble_diags_time_trace.py $date1 $date2 $datapath
 
 rzdm_config_files=/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/config/
 cp ${rzdm_config_files}/* .
