@@ -34,7 +34,8 @@ delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
-    datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    #datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    datapath = str(sys.argv[3])
 except IndexError:
     date1 = "2023011819"
     date2 = "2023011900"
@@ -303,7 +304,7 @@ for ob_type in ob_types:
         title = f"Filtered by:\nu{codes_uv}\n{common_title}"
         plot1.add_title(title, loc="left", fontsize=title_fontsize, color="red", style="italic")
         plot1.add_ylabel("pressure (hPa)", fontsize=xy_label_fontsize)
-        plot1.add_xlabel("u stats (mps)", fontsize=xy_label_fontsize)
+        plot1.add_xlabel("u stats (m/s)", fontsize=xy_label_fontsize)
         plot1.set_xlim(umin, umax)
         plot1.set_ylim(levbot, levtop)
         plot1.add_grid()
@@ -314,7 +315,7 @@ for ob_type in ob_types:
         plot2.plot_layers = plt_list2
         title = f"Filtered by:\nv{codes_uv}\n{common_title}"
         plot2.add_title(title, loc="left", fontsize=title_fontsize, color="red", style="italic")
-        plot2.add_xlabel("v stats (mps)", fontsize=xy_label_fontsize)
+        plot2.add_xlabel("v stats (m/s)", fontsize=xy_label_fontsize)
         plot2.set_xlim(umin, umax)
         plot2.set_ylim(levbot, levtop)
         plot2.add_grid()
