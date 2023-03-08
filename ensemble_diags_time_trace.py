@@ -37,7 +37,8 @@ delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
-    datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    #datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    datapath = str(sys.argv[3])
 except IndexError:
     date1 = "2023011819"
     date2 = "2023011900"
