@@ -48,8 +48,8 @@ skip_enkf_hours = []
 # Filtering parameters
 hem = None  # GL, NH, TR, SH, CONUS, or None. Overrides lat/lon max/mins filter options.
 
-p_max = 1050.0  # maximum pressure (mb) for including observation in calculations
-p_min = 100.0  # minimum pressure (mb) for including observation in calculations
+p_max = 1200.0  # maximum pressure (mb) for including observation in calculations
+p_min = 0.0  # minimum pressure (mb) for including observation in calculations
 
 lat_max = 90.0  # maximum latitude (deg N) for including observation in calculations
 lat_min = 0.0  # minimum latitude (deg N) for including observation in calculations
@@ -61,8 +61,8 @@ error_max = 40.0  # maximum error standard deviation for including observation i
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
 ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
-codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
-codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
+codes_uv = [220, 221, 230, 231, 232, 233, 234, 235, 280, 281, 282]
+codes_tq = [120, 130, 131, 132, 133, 134, 135, 180, 181, 182]
 
 # Plotting parameters
 plot_bias = True  # mean of (forecast - observation)
@@ -86,8 +86,8 @@ ms = 4  # markersize
 ls = ["-", "--", ":", ".-"]  # linestyles: solid, dashed, dotted, dash-dotted
 
 scale_fig_size = 1.2  # =1.2 --> 8*1.2x6*1.2=9.6x7.2 sized fig (1.44 times bigger fig)
-levtop = 125
-levbot = 925  # plot limits
+levtop = 0
+levbot = 1000  # plot limits
 sigthresh = 0.99  # significance threshold (p-value)
 umin = -1.0
 umax = 5.0

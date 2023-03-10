@@ -64,8 +64,8 @@ error_max = 40.0  # maximum error standard deviation for including observation i
 error_min = 0.000001  # minimum error standard deviation for including observation in calculations
 
 ob_types = ["u", "v", "t", "q"]  # supported types: u, v, t, and q
-codes_uv = [280, 281, 282, 220, 221, 230, 231, 232, 233, 234, 235]
-codes_tq = [180, 181, 182, 120, 130, 131, 132, 133, 134, 135]
+codes_uv = [220, 221, 230, 231, 232, 233, 234, 235, 280, 281, 282]
+codes_tq = [120, 130, 131, 132, 133, 134, 135, 180, 181, 182]
 
 # Plotting parameters
 plot_bias = True  # mean of (forecast - observation)
