@@ -21,6 +21,15 @@ def annotate_int(x, y, z, color, ax):
         ax.annotate(value, xy=(x, y[i]), rotation=0, ha='right', color=color, fontsize=7)
 
 
+def annotate_float(x, y, z, color, ax):
+    for i in range(len(z)):
+        value = f"{z[i]:.2f}"
+        try:
+            ax.annotate(value, xy=(x[i], y[i]), rotation=0, ha='right', color=color, fontsize=7)
+        except:
+            ax.annotate(value, xy=(x, y[i]), rotation=0, ha='right', color=color, fontsize=7)
+
+
 expt_names = []
 # ********************************************************************
 #                        USER SPECIFIED PARAMETERS                  *
@@ -354,10 +363,24 @@ fig.create_figure()
 lannotate = False
 lannotate = True
 if lannotate:
-    annotate_int(umax, y, num_obs_assim[0, i_e, :], "gray", plt.subplot(141))
-    annotate_int(umax, y, num_obs_assim[1, i_e, :], "gray", plt.subplot(142))
-    annotate_int(tmax, y, num_obs_assim[2, i_e, :], "gray", plt.subplot(143))
-    annotate_int(qmax, y, num_obs_assim[3, i_e, :], "gray", plt.subplot(144))
+    for ob_type in ob_types:
+        i_o = ob_types.index(ob_type)
+        if ob_type == "u" or ob_type == "v":
+            xmax = umax
+        if ob_type == "t":
+            xmax = tmax
+        if ob_type == "q":
+            xmax = qmax
+
+        #annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, 4, i_o + 1))
+        annotate_float(xmax, y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, 4, i_o + 1))
+        #annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(1, 4, i_o + 1))
+
+
+    #annotate_int(umax, y, num_obs_assim[0, i_e, :], "gray", plt.subplot(141))
+    #annotate_int(umax, y, num_obs_assim[1, i_e, :], "gray", plt.subplot(142))
+    #annotate_int(tmax, y, num_obs_assim[2, i_e, :], "gray", plt.subplot(143))
+    #annotate_int(qmax, y, num_obs_assim[3, i_e, :], "gray", plt.subplot(144))
 
 sdate = dates[0]
 edate = dates[-1]
