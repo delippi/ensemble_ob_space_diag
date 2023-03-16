@@ -372,15 +372,14 @@ if lannotate:
         if ob_type == "q":
             xmax = qmax
 
-        #annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, 4, i_o + 1))
-        annotate_float(xmax, y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, 4, i_o + 1))
-        #annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(1, 4, i_o + 1))
-
-
-    #annotate_int(umax, y, num_obs_assim[0, i_e, :], "gray", plt.subplot(141))
-    #annotate_int(umax, y, num_obs_assim[1, i_e, :], "gray", plt.subplot(142))
-    #annotate_int(tmax, y, num_obs_assim[2, i_e, :], "gray", plt.subplot(143))
-    #annotate_int(qmax, y, num_obs_assim[3, i_e, :], "gray", plt.subplot(144))
+        #annotate_float(bias[i_o, i_e, :], y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(rms[i_o, i_e, :], y, rms[i_o, i_e, :], "red", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(std_dev[i_o, i_e, :], y, std_dev[i_o, i_e, :], "magenta", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(spread[i_o, i_e, :], y, spread[i_o, i_e, :], "cyan", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(total_spread[i_o, i_e, :], y, total_spread[i_o, i_e, :], "navy", plt.subplot(1, n_plots, i_o + 1))
+        #annotate_float(cr[i_o, i_e, :], y, cr[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
+        annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
 
 sdate = dates[0]
 edate = dates[-1]
