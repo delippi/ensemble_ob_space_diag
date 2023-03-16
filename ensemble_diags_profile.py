@@ -26,7 +26,7 @@ def annotate_float(x, y, z, color, ax):
         value = f"{z[i]:.2f}"
         try:
             ax.annotate(value, xy=(x[i], y[i]), rotation=0, ha='right', color=color, fontsize=7)
-        except:
+        except TypeError:
             ax.annotate(value, xy=(x, y[i]), rotation=0, ha='right', color=color, fontsize=7)
 
 
@@ -43,7 +43,7 @@ delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
-    #datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    # datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
     datapath = str(sys.argv[3])
 except IndexError:
     date1 = "2023011819"
@@ -111,26 +111,28 @@ qmax = 3.00
 
 for expt_name in expt_names:
     # Call main function - for experiments
-    levels, levels_up, levels_down, dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.profile(
-        datapath,
-        date1,
-        date2,
-        expt_names,
-        n_mem,
-        delt,
-        skip_enkf_hours,
-        ob_types,
-        codes_uv,
-        codes_tq,
-        hem,
-        p_max,
-        p_min,
-        lat_max,
-        lat_min,
-        lon_max,
-        lon_min,
-        error_max,
-        error_min,)
+    levels, levels_up, levels_down, dates, \
+        bias, rms, std_dev, spread, ob_error, total_spread, \
+        num_obs_total, num_obs_assim, cr, ser = pyGSI.ensemble_diags.profile(
+            datapath,
+            date1,
+            date2,
+            expt_names,
+            n_mem,
+            delt,
+            skip_enkf_hours,
+            ob_types,
+            codes_uv,
+            codes_tq,
+            hem,
+            p_max,
+            p_min,
+            lat_max,
+            lat_min,
+            lon_max,
+            lon_min,
+            error_max,
+            error_min,)
 
 plot1 = CreatePlot()
 plot2 = CreatePlot()
@@ -372,13 +374,14 @@ if lannotate:
         if ob_type == "q":
             xmax = qmax
 
-        #annotate_float(bias[i_o, i_e, :], y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(rms[i_o, i_e, :], y, rms[i_o, i_e, :], "red", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(std_dev[i_o, i_e, :], y, std_dev[i_o, i_e, :], "magenta", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(spread[i_o, i_e, :], y, spread[i_o, i_e, :], "cyan", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(total_spread[i_o, i_e, :], y, total_spread[i_o, i_e, :], "navy", plt.subplot(1, n_plots, i_o + 1))
-        #annotate_float(cr[i_o, i_e, :], y, cr[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(xmax, y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(bias[i_o, i_e, :], y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(rms[i_o, i_e, :], y, rms[i_o, i_e, :], "red", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(std_dev[i_o, i_e, :], y, std_dev[i_o, i_e, :], "magenta", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(spread[i_o, i_e, :], y, spread[i_o, i_e, :], "cyan", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(total_spread[i_o, i_e, :], y, total_spread[i_o, i_e, :], "navy", plt.subplot(1, n_plots, i_o + 1))
+        # annotate_float(cr[i_o, i_e, :], y, cr[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
         annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
 
 sdate = dates[0]

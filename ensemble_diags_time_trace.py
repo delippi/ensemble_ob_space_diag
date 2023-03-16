@@ -37,7 +37,7 @@ delt = 1  # 1-hourly data
 try:
     date1 = str(sys.argv[1])
     date2 = str(sys.argv[2])
-    #datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
+    # datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
     datapath = str(sys.argv[3])
 except IndexError:
     date1 = "2023011819"
@@ -298,7 +298,6 @@ for ob_type in ob_types:  # make a new figure for each observation type
             lp.label = None
             plt_list.append(lp)
 
-
     # Plot number of obs
     plot2 = CreatePlot()
     plt_list2 = []
@@ -336,7 +335,11 @@ for ob_type in ob_types:  # make a new figure for each observation type
 
     # Plot 1
     plot1.plot_layers = plt_list
-    title = f"Filtered by:\n{ob_type}{codes},  {p_max:.1f}-{p_min:.1f} hPa,  {lat_min:.1f}-{lat_max:.1f} degN,  {lon_min:.1f}-{lon_max:.1f} degE,  {error_min:.6f}-{error_max:.1f} err"
+    title = f"Filtered by:\n{ob_type}{codes},  "
+    title = title + f"{p_max:.1f}-{p_min:.1f} hPa,  "
+    title = title + f"{lat_min:.1f}-{lat_max:.1f} degN,  "
+    title = title + f"{lon_min:.1f}-{lon_max:.1f} degE,  "
+    title = title + f"{error_min:.6f}-{error_max:.1f} err"
 
     plot1.add_title(title, loc="left", fontsize=title_fontsize, color="red", style="italic")
     plot1.add_ylabel(f"stats ({units})", fontsize=xy_label_fontsize)
