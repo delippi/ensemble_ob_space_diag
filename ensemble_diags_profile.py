@@ -85,6 +85,10 @@ plot_ser = False  # spread error ratio (intraensemble std_dev/ rms)
 plot_zero_line = True  # vertical line on zero
 plot_one_line = True  # vertical line on one
 
+# NetCDF variable options
+lomfnbc = True  # use non-bias corrected omf (False: use omf_adjusted).
+lerrinv_input = True  # use errorinv_input for observation error (False: use errorinv_final).
+
 # Figure settings
 suptitle_fontsize = 15  # super title fontsize
 title_fontsize = 8  # subplot title fontsizes
@@ -132,7 +136,9 @@ for expt_name in expt_names:
             lon_max,
             lon_min,
             error_max,
-            error_min,)
+            error_min,
+            lomfnbc,
+            lerrinv_input,)
 
 plot1 = CreatePlot()
 plot2 = CreatePlot()
