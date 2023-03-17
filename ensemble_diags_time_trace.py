@@ -80,8 +80,8 @@ plot_zero_line = True  # horizontal line on zero
 plot_one_line = True  # horizontal line on one
 
 # NetCDF variable options
-lomfnbc = True  # use non-bias corrected omf (False: use omf_adjusted).
-lerrinv_input = True  # use errorinv_input for observation error (False: use errorinv_final).
+use_bc_omf = True  #  use bias corrected omf (False: use Obs_Minus_Forecast_unadjusted)
+use_input_err = True  # use errorinv_input for observation error (True: use Error_Input)
 
 # Figure settings
 suptitle_fontsize = 15  # super title fontsize
@@ -125,8 +125,8 @@ dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_ob
     lon_min,
     error_max,
     error_min,
-    lomfnbc,
-    lerrinv_input,)
+    use_bc_omf,
+    use_input_err,)
 # ****************************************************************************
 
 # Define the x-axis (time UTC)

@@ -46,9 +46,13 @@ try:
     # datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
     datapath = str(sys.argv[3])
 except IndexError:
-    date1 = "2023011819"
+    date1 = "2023011800"
     date2 = "2023011900"
     datapath = "../diags/"
+    #date1 = "2023031619"
+    #date2 = "2023031623"
+    #datapath = "/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.3.8/nwges/observer_diag/"
+    #datapath = "/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
 
 # Example if EnKF is only run 18-00Z
 # skip_enkf_hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
@@ -86,8 +90,8 @@ plot_zero_line = True  # vertical line on zero
 plot_one_line = True  # vertical line on one
 
 # NetCDF variable options
-lomfnbc = True  # use non-bias corrected omf (False: use omf_adjusted).
-lerrinv_input = True  # use errorinv_input for observation error (False: use errorinv_final).
+use_bc_omf = False  # use bias corrected omf (False: use Obs_Minus_Forecast_unadjusted)
+use_input_err = True  # use errorinv_input for observation error (True: use Error_Input).
 
 # Figure settings
 suptitle_fontsize = 15  # super title fontsize
@@ -137,8 +141,8 @@ for expt_name in expt_names:
             lon_min,
             error_max,
             error_min,
-            lomfnbc,
-            lerrinv_input,)
+            use_bc_omf,
+            use_input_err,)
 
 plot1 = CreatePlot()
 plot2 = CreatePlot()
