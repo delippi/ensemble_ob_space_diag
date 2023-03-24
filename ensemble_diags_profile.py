@@ -363,7 +363,7 @@ for ob_type in ob_types:
         plot4.set_ylim(levbot, levtop)
         plot4.add_grid()
         plt_list.append(plot4)
-        plot4.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=1)
+        plot4.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncol=1)
         n_plots = n_plots + 1
 
 # Figure
@@ -373,7 +373,7 @@ fig.create_figure()
 
 # Annotate Stats
 lannotate = False
-lannotate = True
+#lannotate = True  # annotations aren't working on wcoss
 if lannotate:
     for ob_type in ob_types:
         i_o = ob_types.index(ob_type)

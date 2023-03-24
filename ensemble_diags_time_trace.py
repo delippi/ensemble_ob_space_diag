@@ -40,7 +40,7 @@ try:
     # datapath = "/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/"
     datapath = str(sys.argv[3])
 except IndexError:
-    date1 = "2023011819"
+    date1 = "2023011800"
     date2 = "2023011900"
     datapath = "../diags/"
 
@@ -353,7 +353,7 @@ for ob_type in ob_types:  # make a new figure for each observation type
     plot1.set_xticks(x)
     plot1.set_xticklabels(x_str, rotation=90)
     plot1.set_ylim(ymin, ymax)
-    plot1.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=ncols)
+    plot1.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncol=ncols)
 
     # Plot 2
     plot2.plot_layers = plt_list2
@@ -362,7 +362,7 @@ for ob_type in ob_types:  # make a new figure for each observation type
     plot2.add_grid()
     plot2.set_xticks(x)
     plot2.set_xticklabels(x_str, rotation=90)
-    plot2.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncols=ncols)
+    plot2.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncol=ncols)
 
     # Figure
     fig = CreateFigure(nrows=2, ncols=1, figsize=((8 + ncols * 1) * scale_fig_size, 6 * scale_fig_size))
@@ -375,7 +375,7 @@ for ob_type in ob_types:  # make a new figure for each observation type
 
     # Annotate Stats
     lannotate = False
-    lannotate = True
+    #lannotate = True  # annotations aren't working on wcoss
     if lannotate:
         # Plot 1 - annotations
         # annotate_float(x, bias[i_o, i_e, :], "green", plt.subplot(211))
