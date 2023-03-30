@@ -15,6 +15,7 @@ date2=$(date --date "yesterday" "+%Y%m%d"23)
 hours=23
 expt="rrfs_a_conus"
 datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.3.8/nwges/observer_diag/" #2023031612
+#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/nwges/observer_diag/"
 datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/" # rrfs_a_conus
 figdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/"
 scriptpath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
@@ -26,9 +27,8 @@ year=`echo $date2 | cut -c 1-4`
 mon=`echo $date2 | cut -c 5-6`
 day=`echo $date2 | cut -c 7-8`
 
-if [[ ! -L $expt ]]; then
-    ln -sf $datapath_rt ./$expt
-fi
+unlink ./$expt
+ln -sf $datapath_rt ./$expt
 
 outdir="$figdir/$year/$mon/$day/"
 mkdir -p $outdir
@@ -45,7 +45,9 @@ fi
 echo ""
 echo "your files are located: $outdir"
 
-## upload to rzdm
-#cd $figdir
-#ssh-keygen -R emcrzdm.ncep.noaa.gov -f /u/donald.e.lippi/.ssh/known_hosts
-#rsync -a * donald.lippi@emcrzdm.ncep.noaa.gov:/home/www/emc/htdocs/mmb/dlippi/rrfs_a/.
+exit
+# upload to rzdm
+cd $figdir
+cd /lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/
+ssh-keygen -R emcrzdm.ncep.noaa.gov -f /u/donald.e.lippi/.ssh/known_hosts
+rsync -a * donald.lippi@emcrzdm.ncep.noaa.gov:/home/www/emc/htdocs/mmb/dlippi/rrfs_a/.
