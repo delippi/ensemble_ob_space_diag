@@ -370,10 +370,10 @@ for ob_type in ob_types:
 fig = CreateFigure(nrows=1, ncols=n_plots, figsize=((3.5 * n_plots) * scale_fig_size, 6 * scale_fig_size))
 fig.plot_list = plt_list
 fig.create_figure()
+axs = fig.fig.get_axes()
 
 # Annotate Stats
-lannotate = False
-#lannotate = True  # annotations aren't working on wcoss
+lannotate = True
 if lannotate:
     for ob_type in ob_types:
         i_o = ob_types.index(ob_type)
@@ -384,15 +384,16 @@ if lannotate:
         if ob_type == "q":
             xmax = qmax
 
-        # annotate_float(xmax, y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(bias[i_o, i_e, :], y, bias[i_o, i_e, :], "green", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(rms[i_o, i_e, :], y, rms[i_o, i_e, :], "red", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(std_dev[i_o, i_e, :], y, std_dev[i_o, i_e, :], "magenta", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(spread[i_o, i_e, :], y, spread[i_o, i_e, :], "cyan", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(total_spread[i_o, i_e, :], y, total_spread[i_o, i_e, :], "navy", plt.subplot(1, n_plots, i_o + 1))
-        # annotate_float(cr[i_o, i_e, :], y, cr[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
-        annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(1, n_plots, i_o + 1))
+        ax = axs[i_o]
+        # annotate_float(xmax, y, bias[i_o, i_e, :], "green", ax)
+        # annotate_float(bias[i_o, i_e, :], y, bias[i_o, i_e, :], "green", ax)
+        # annotate_float(rms[i_o, i_e, :], y, rms[i_o, i_e, :], "red", ax)
+        # annotate_float(std_dev[i_o, i_e, :], y, std_dev[i_o, i_e, :], "magenta", ax)
+        # annotate_float(spread[i_o, i_e, :], y, spread[i_o, i_e, :], "cyan", ax)
+        # annotate_float(ob_error[i_o, i_e, :], y, ob_error[i_o, i_e, :], "orange", ax)
+        # annotate_float(total_spread[i_o, i_e, :], y, total_spread[i_o, i_e, :], "navy", ax)
+        # annotate_float(cr[i_o, i_e, :], y, cr[i_o, i_e, :], "gray", ax)
+        annotate_int(xmax, y, num_obs_assim[i_o, i_e, :], "gray", ax)
 
 sdate = dates[0]
 edate = dates[-1]

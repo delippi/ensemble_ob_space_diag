@@ -372,24 +372,26 @@ for ob_type in ob_types:  # make a new figure for each observation type
     edate = dates[-1]
 
     fig.create_figure()  # must go before add_suptitle
+    axs = fig.fig.get_axes()
 
     # Annotate Stats
-    lannotate = False
-    #lannotate = True  # annotations aren't working on wcoss
+    lannotate = True
     if lannotate:
         # Plot 1 - annotations
-        # annotate_float(x, bias[i_o, i_e, :], "green", plt.subplot(211))
-        # annotate_float(x, rms[i_o, i_e, :], "red", plt.subplot(211))
-        # annotate_float(x, std_dev[i_o, i_e, :], "magenta", plt.subplot(211))
-        # annotate_float(x, spread[i_o, i_e, :], "cyan", plt.subplot(211))
-        # annotate_float(x, ob_error[i_o, i_e, :], "orange", plt.subplot(211))
-        # annotate_float(x, total_spread[i_o, i_e, :], "navy", plt.subplot(211))
-        # annotate_float(x, cr[i_o, i_e, :], "gray", plt.subplot(211))
-        # annotate_float(x, ser[i_o, i_e, :], "black", plt.subplot(211))
+        ax = axs[0]
+        # annotate_float(x, bias[i_o, i_e, :], "green", ax)
+        # annotate_float(x, rms[i_o, i_e, :], "red", ax)
+        # annotate_float(x, std_dev[i_o, i_e, :], "magenta", ax)
+        # annotate_float(x, spread[i_o, i_e, :], "cyan", ax)
+        # annotate_float(x, ob_error[i_o, i_e, :], "orange", ax)
+        # annotate_float(x, total_spread[i_o, i_e, :], "navy", ax)
+        # annotate_float(x, cr[i_o, i_e, :], "gray", ax)
+        # annotate_float(x, ser[i_o, i_e, :], "black", ax)
 
         # Plot 2 - annotations
-        annotate_int(x, num_obs_assim[i_o, i_e, :], "gray", plt.subplot(212))
-        # annotate_int(x, num_obs_total[i_o, i_e, :], "black", plt.subplot(212))
+        ax = axs[1]
+        annotate_int(x, num_obs_assim[i_o, i_e, :], "gray", ax)
+        # annotate_int(x, num_obs_total[i_o, i_e, :], "black", ax)
 
     fig.add_suptitle(f"{ob_type}: Ensemble DA Obs Space Diagnostics ({sdate}-{edate})", ha="center", fontsize=suptitle_fontsize)
     fig.tight_layout()  # must go after add_suptitle
