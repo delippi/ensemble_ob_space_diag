@@ -2,7 +2,6 @@
 
 machine=`hostname | cut -c 1`
 if [[ $machine == "c" || $machine == "d" ]]; then
-    #py=/u/donald.e.lippi/miniconda3/bin/python
     py=/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/bin/python
     export incdate=/u/donald.e.lippi/bin/incdate
 fi

@@ -29,8 +29,8 @@ expt_names = []
 #                        USER SPECIFIED PARAMETERS                  *
 # ********************************************************************
 n_mem = 30
-expt_names.append("rrfs_a_conus")
-# expt_names.append("rrfs_a_na")
+#expt_names.append("rrfs_a_conus")
+expt_names.append("rrfs_a_na")
 # expt_names.append("just uncomment for a second experiment")
 
 delt = 1  # 1-hourly data
@@ -80,7 +80,7 @@ plot_zero_line = True  # horizontal line on zero
 plot_one_line = True  # horizontal line on one
 
 # NetCDF variable options
-use_bc_omf = True  #  use bias corrected omf (False: use Obs_Minus_Forecast_unadjusted)
+use_bc_omf = False  #  use bias corrected omf (False: use Obs_Minus_Forecast_unadjusted)
 use_input_err = True  # use errorinv_input for observation error (True: use Error_Input)
 
 # Figure settings

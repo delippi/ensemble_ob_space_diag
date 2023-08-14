@@ -2,22 +2,24 @@
 
 machine=`hostname | cut -c 1`
 if [[ $machine == "c" || $machine == "d" ]]; then
-    #py=/u/donald.e.lippi/miniconda3/bin/python
     py=/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/bin/python
     export incdate=/u/donald.e.lippi/bin/incdate
 fi
 
 # Run at 00 UTC
 date2=$(date --date "yesterday" "+%Y%m%d"23)
-date2=20230403
+date2=20230721
+date2=$1
 date2=${date2}23
 
 ############### USER INPUT ##################
 #date2=2023031923
 hours=23
-expt="rrfs_a_conus"
+expt="rrfs_a_conus rrfs_a_na"
+expt="rrfs_a_na"
 #datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.3.8/nwges/observer_diag/" #2023031612
-datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/nwges/observer_diag/"
+#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/nwges/observer_diag/"
+datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
 datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/" # rrfs_a_conus
 figdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/"
 scriptpath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
