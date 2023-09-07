@@ -8,8 +8,7 @@ fi
 
 # Run at 00 UTC
 date2=$(date --date "yesterday" "+%Y%m%d"23)
-date2=20230721
-date2=$1
+date2=20230904
 date2=${date2}23
 
 ############### USER INPUT ##################
@@ -19,8 +18,10 @@ expt="rrfs_a_conus rrfs_a_na"
 expt="rrfs_a_na"
 #datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.3.8/nwges/observer_diag/" #2023031612
 #datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/nwges/observer_diag/"
-datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
-datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/" # rrfs_a_conus
+#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
+#datapath_conus=""
+datapath_na="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
+datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
 figdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/"
 scriptpath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
 ############END USER INPUT ##################
@@ -31,8 +32,11 @@ year=`echo $date2 | cut -c 1-4`
 mon=`echo $date2 | cut -c 5-6`
 day=`echo $date2 | cut -c 7-8`
 
-unlink ./$expt
-ln -sf $datapath_rt ./$expt
+#unlink ./$expt
+unlink ./rrfs_a_na
+ln -sf $datapath_na ./rrfs_a_na
+#ln -sf $datapath_conus ./rrfs_a_conus
+
 
 outdir="$figdir/$year/$mon/$day/"
 mkdir -p $outdir
