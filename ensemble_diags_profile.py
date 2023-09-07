@@ -98,6 +98,7 @@ suptitle_fontsize = 15  # super title fontsize
 title_fontsize = 8  # subplot title fontsizes
 xy_label_fontsize = 13  # xy-axes label fontsized
 tick_label_fontsize = 10  # xy-axes tick label fontsizes
+legend_fontsize = 9  # fontsize for the legend
 lw = 1.5  # linewidth
 ms = 4  # markersize
 ls = ["-", "--", ":", ".-"]  # linestyles: solid, dashed, dotted, dash-dotted
@@ -363,11 +364,11 @@ for ob_type in ob_types:
         plot4.set_ylim(levbot, levtop)
         plot4.add_grid()
         plt_list.append(plot4)
-        plot4.add_legend(loc="upper left", bbox_to_anchor=(1, 1), fancybox=True, framealpha=0.80, ncol=1)
+        plot4.add_legend(loc="upper left", bbox_to_anchor=(0.30, 1), fancybox=True, framealpha=0.70, ncol=1, fontsize=legend_fontsize)
         n_plots = n_plots + 1
 
 # Figure
-fig = CreateFigure(nrows=1, ncols=n_plots, figsize=((3.5 * n_plots) * scale_fig_size, 6 * scale_fig_size))
+fig = CreateFigure(nrows=1, ncols=n_plots, figsize=((3.0 * n_plots) * scale_fig_size, 6 * scale_fig_size))
 fig.plot_list = plt_list
 fig.create_figure()
 axs = fig.fig.get_axes()
@@ -399,7 +400,7 @@ sdate = dates[0]
 edate = dates[-1]
 fig.add_suptitle(f"Ensemble DA Obs Space Diagnostics ({sdate}-{edate})", ha="center", fontsize=suptitle_fontsize)
 fig.tight_layout()  # must go after add_suptitle
-fig.save_figure(f"./obs_diag_profiles_{sdate}-{edate}.png")
+fig.save_figure(f"./obs_diag_enkf_profiles.png")
 
 # Calculate time to run script
 tictoc.toc(tic, "Done. ")
