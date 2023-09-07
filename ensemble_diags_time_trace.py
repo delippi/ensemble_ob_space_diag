@@ -395,7 +395,7 @@ for ob_type in ob_types:  # make a new figure for each observation type
 
     fig.add_suptitle(f"{ob_type}: Ensemble DA Obs Space Diagnostics ({sdate}-{edate})", ha="center", fontsize=suptitle_fontsize)
     fig.tight_layout()  # must go after add_suptitle
-    fig.save_figure(f"./obs_diag_{sdate}-{edate}_{ob_type}.png")
+    fig.save_figure(f"./obs_diag_enkf_{ob_type}.png")
 
 # Calculate time to run script
 tictoc.toc(tic, "Done. ")
