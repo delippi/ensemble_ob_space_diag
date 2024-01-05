@@ -12,13 +12,9 @@ date2=$(date --date "yesterday" "+%Y%m%d"23)
 ############### USER INPUT ##################
 #date2=2023031923
 hours=23
-expt="rrfs_a_conus rrfs_a_na"
 expt="rrfs_a_na"
-#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/v0.3.8/nwges/observer_diag/" #2023031612
-#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/conus/nwges/observer_diag/"
-#datapath_rt="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
-#datapath_conus=""
-datapath_na="/lfs/h2/emc/ptmp/emc.lam/rrfs/na/nwges/observer_diag/"
+#expt="$expt v0.7.9"
+expt="$expt v0.8.1"
 datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
 figdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/"
 scriptpath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
@@ -31,8 +27,8 @@ mon=`echo $date2 | cut -c 5-6`
 day=`echo $date2 | cut -c 7-8`
 
 #unlink ./$expt
-unlink ./rrfs_a_na
-ln -sf $datapath_na ./rrfs_a_na
+#unlink ./rrfs_a_na
+#ln -sf $datapath_na ./rrfs_a_na
 #ln -sf $datapath_conus ./rrfs_a_conus
 
 
@@ -51,9 +47,11 @@ fi
 echo ""
 echo "your files are located: $outdir"
 
-exit
+echo "Done making figs. Now upload to rzdm..."
 # upload to rzdm
 cd $figdir
 cd /lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/
 ssh-keygen -R emcrzdm.ncep.noaa.gov -f /u/donald.e.lippi/.ssh/known_hosts
 rsync -a * donald.lippi@emcrzdm.ncep.noaa.gov:/home/www/emc/htdocs/mmb/dlippi/rrfs_a/.
+
+echo "Done uploading."
