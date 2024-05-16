@@ -1,23 +1,22 @@
 #!/bin/bash
 
+cd /lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag
+
 machine=`hostname | cut -c 1`
 if [[ $machine == "c" || $machine == "d" ]]; then
     py=/apps/spack/python/3.8.6/intel/19.1.3.304/pjn2nzkjvqgmjw4hmyz43v5x4jbxjzpk/bin/python
     export incdate=/u/donald.e.lippi/bin/incdate
 fi
 
-# Run at 00 UTC
-date2=$(date --date "yesterday" "+%Y%m%d"23)
-#date2=$(date --date "2 days ago" "+%Y%m%d"23)
-
 ############### USER INPUT ##################
 #date2=2023031923
-hours=23
+date1=$(date --date "24 hour ago" "+%Y%m%d%H")
+date2=$(date --date "18 hour ago" "+%Y%m%d%H")
 expt="rrfs_a_na"
 #expt="$expt v0.7.9"
 #expt="$expt v0.8.1"
 #expt="$expt v0.8.3"
-#expt="$expt v0.8.5"
+expt="$expt v0.8.5"
 datapath="/lfs/h2/emc/da/noscrub/donald.e.lippi/rrfs_mon/ensemble_ob_space_diag/"
 figdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/figs/"
 tmpdir="/lfs/h2/emc/ptmp/donald.e.lippi/rrfs_a_diags/tmp/"
@@ -27,7 +26,7 @@ unzip="YES"
 ############END USER INPUT ##################
 
 export ndate=/u/donald.e.lippi/bin/ndate
-date1=`$incdate $date2 -$hours`
+
 echo $date1 $date2
 year=`echo $date2 | cut -c 1-4`
 mon=`echo $date2 | cut -c 5-6`
@@ -57,7 +56,7 @@ datapath=$tmpdir
 outdir="$figdir/$year/$mon/$day/"
 mkdir -p $outdir
 cd $outdir
-$py $scriptpath/ensemble_diags_profile.py $date1 $date2 $datapath
+#$py $scriptpath/ensemble_diags_profile.py $date1 $date2 $datapath
 $py $scriptpath/ensemble_diags_time_trace.py $date1 $date2 $datapath
 
 # Only copy rzdm files when on WCOSS.

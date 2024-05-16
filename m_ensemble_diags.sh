@@ -8,8 +8,8 @@ fi
 
 # Run at 00 UTC
 date2=$(date --date "yesterday" "+%Y%m%d"23)
-date2=20230904
-date2=${date2}23
+date2=20240129
+date2=${date2}05
 
 ############### USER INPUT ##################
 #date2=2023031923

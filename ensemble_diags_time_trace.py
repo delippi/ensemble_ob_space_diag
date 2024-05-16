@@ -1,4 +1,5 @@
 import tictoc
+from datetime import datetime, timedelta
 import pyGSI.ensemble_diags
 from emcpy.plots.plots import LinePlot, HorizontalLine
 from emcpy.plots.create_plots import CreatePlot, CreateFigure
@@ -32,8 +33,9 @@ n_mem = 30
 #expt_names.append("rrfs_a_conus")
 expt_names.append("rrfs_a_na")
 #expt_names.append("v0.7.9")
-expt_names.append("v0.8.1")
-# expt_names.append("just uncomment for a second experiment")
+#expt_names.append("v0.8.1")
+#expt_names.append("v0.8.3") # LSB activated 2024021419
+#expt_names.append("v0.8.5") # LSB activated 2024021419
 
 delt = 1  # 1-hourly data
 try:
@@ -130,10 +132,52 @@ dates, bias, rms, std_dev, spread, ob_error, total_spread, num_obs_total, num_ob
     use_bc_omf,
     use_input_err,)
 # ****************************************************************************
+# For missing data: Anywhere where these ==0, set them to np.nan so nothing is plotted.
+#bias[bias == 0] = np.nan
+#rms[rms == 0] = np.nan
+#std_dev[std_dev == 0] = np.nan
+#spread[spread == 0] = np.nan
+#ob_error[ob_error == 0] = np.nan
+#total_spread[total_spread == 0] = np.nan
+#num_obs_total[num_obs_total == 0] = np.nan
+#num_obs_assim[num_obs_assim == 0] = np.nan
+#cr[cr == 0] = np.nan
+#ser[ser == 0] = np.nan
+
+
+def roll(stat,fhstart):
+    return np.roll(stat, shift=-1*(int(fhstart)), axis=2)
+
+# Convert the strings to datetime objects
+sdate = dates[0]
+edate = dates[-1]
+sdate = datetime.strptime(sdate, '%Y%m%d%H')
+edate = datetime.strptime(edate, '%Y%m%d%H')
+fhstart = sdate.strftime('%H')
+import pdb
+
+bias = roll(bias,fhstart)
+rms = roll(rms,fhstart)
+std_dev = roll(std_dev,fhstart)
+spread = roll(spread,fhstart)
+ob_error = roll(ob_error,fhstart)
+total_spread = roll(total_spread,fhstart)
+num_obs_total = roll(num_obs_total,fhstart)
+num_obs_assim = roll(num_obs_assim,fhstart)
+cr = roll(cr,fhstart)
+ser = roll(ser,fhstart)
+
+
+# Generate the list of strings for hours from e.g., 1900 in the start date to 1800 in the end date
+#x_str = [(sdate + timedelta(hours=i)).strftime('%H00') for i in range(0, int((edate - sdate).total_seconds() // 3600) + 1)]
 
 # Define the x-axis (time UTC)
 x_str = [str(item).zfill(4) for item in range(0, 2400, 100)]
-x = [int(item) for item in x_str]
+x_str = np.roll(x_str, shift=-1*(int(fhstart)))
+#x = [int(item) for item in x_str]
+x = x_str
+sdate = dates[0]
+edate = dates[-1]
 
 # Prepare for plotting
 for ob_type in ob_types:  # make a new figure for each observation type
@@ -370,8 +414,6 @@ for ob_type in ob_types:  # make a new figure for each observation type
     fig = CreateFigure(nrows=2, ncols=1, figsize=((8 + ncols * 1) * scale_fig_size, 6 * scale_fig_size))
     fig.plot_list = [plot1, plot2]
 
-    sdate = dates[0]
-    edate = dates[-1]
 
     fig.create_figure()  # must go before add_suptitle
     axs = fig.fig.get_axes()
