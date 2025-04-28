@@ -31,7 +31,8 @@ expt_names = []
 # ********************************************************************
 n_mem = 30
 #expt_names.append("rrfs_a_conus")
-expt_names.append("rrfs_a_na")
+#expt_names.append("rrfs_a_na")
+expt_names.append("v1.0")
 #expt_names.append("v0.7.9")
 #expt_names.append("v0.8.1")
 #expt_names.append("v0.8.3") # LSB activated 2024021419

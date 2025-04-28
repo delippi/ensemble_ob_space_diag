@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib
 import sys
 import warnings
+import pdb
 
 matplotlib.use("Agg")  # Must be called before importing pyplot
 import matplotlib.pyplot as plt
@@ -36,7 +37,8 @@ expt_names = []
 # ********************************************************************
 n_mem = 30
 #expt_names.append("rrfs_a_conus")
-expt_names.append("rrfs_a_na")
+#expt_names.append("rrfs_a_na")
+expt_names.append("v1.0")
 #expt_names.append("v0.7.9")
 #expt_names.append("v0.8.1")
 #expt_names.append("v0.8.3")
